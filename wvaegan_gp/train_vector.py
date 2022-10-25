@@ -20,7 +20,7 @@ DATA_PATH = '../motor_dataset_20221018st'
 EPOCHS = 50000  # エポック数
 BATCH_SIZE = 64  # バッチサイズ
 LEARNING_RATE = 1e-5  # 学習率
-LATENT_DIM = 1  # 潜在変数の数
+LATENT_DIM = 2  # 潜在変数の数
 N_CLASSES = 1  # クラスの数
 COORD_SIZE = 932  # 座標の数
 
@@ -79,15 +79,6 @@ torque_std = torques_npz[torques_npz.files[3]]
 coords = coords_npz[coords_npz.files[0]]
 coord_mean = coords_npz[coords_npz.files[1]]
 coord_std = coords_npz[coords_npz.files[2]]
-
-# perfs_npz = np.load("../motor_dataset_20221013st/labels.npz")
-# coords_npz = np.load("../motor_dataset_20221013st/coords.npz")
-# coords = coords_npz['coords']
-# coord_mean = coords_npz['mean']
-# coord_std = coords_npz['std']
-# perfs = perfs_npz['torque']
-# perf_mean = perfs_npz['mean']
-# perf_std = perfs_npz['std']
 
 max_torque = torques.max()
 min_torque = torques.min()

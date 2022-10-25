@@ -21,11 +21,12 @@ class Encoder(nn.Module):
         self.coord_size = coord_size
         
         self.model = nn.Sequential(
-            *block(1 + self.coord_size, 256, normalize=False),
-            *block(256, 512),
+            *block(1 + self.coord_size, 1024, normalize=False),
+            *block(1024, 512),
             *block(512, 256),
             *block(256, 128),
-            nn.Linear(128, latent_dim),
+            *block(128, 64),
+            nn.Linear(64, latent_dim),
             nn.Tanh()
         )
         self.l_mu = nn.Linear(in_features=latent_dim, out_features=latent_dim)
@@ -56,7 +57,8 @@ class Decoder(nn.Module):
             *block(64, 128),
             *block(128, 256),
             *block(256, 512),
-            nn.Linear(512, coord_size),
+            *block(512, 1024),
+            nn.Linear(1024, coord_size),
             nn.Tanh()
         )
 
@@ -81,9 +83,9 @@ class Discriminator(nn.Module):
             return layers
         
         self.model = nn.Sequential(
-            *block(1 + coord_size, 512, dropout=0.2),
-            *block(512, 256, dropout=0.2),
-            nn.Linear(256, 1),
+            *block(1 + coord_size, 1024, dropout=0.2),
+            *block(1024, 512, dropout=0.2),
+            nn.Linear(512, 1),
             nn.Sigmoid()
         )
         
