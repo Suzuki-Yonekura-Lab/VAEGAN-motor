@@ -68,7 +68,7 @@ class Decoder(nn.Module):
         # Concatenate label embedding and image to produce input
         gen_input = torch.cat((labels, noise), -1)
         coords = self.model(gen_input)
-        coords = coords.view(1, self.coord_size)
+        coords = coords.view(coords.shape[0], *(1, self.coord_size))
         return coords
         
 class Discriminator(nn.Module):
@@ -91,7 +91,7 @@ class Discriminator(nn.Module):
         
     def forward(self, coords, labels):
         # Concatenate label embedding and image to produce input
-        c_coords = torch.cat((coords.view(1, -1), labels), -1)
-        c_coords_flat = c_coords.view(1, -1)
+        c_coords = torch.cat((coords.view(coords.size(0), -1), labels), -1)
+        c_coords_flat = c_coords.view(c_coords.shape[0], -1)
         validity = self.model(c_coords_flat)
         return validity
